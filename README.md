@@ -1,271 +1,119 @@
-# Akkodis-IOT-StressLess
- StressLess IOT product to monitor workers physiological stress
+# Akkodis StressLess IoT
 
-Database structure
+Akkodis StressLess is an IoT product aimed at monitoring workers' physiological stress levels in real-time to improve their performance and reduce the risk of injury. The system collects biometric data from workers, analyzes the data to determine stress levels, and provides customized training recommendations based on the workers' physiological stress levels.
 
-MW1- manual_worker 01
-MW2- manual_worker 02
-MW3- manual_worker 03
-MW4- manual_worker 04
-MW5- manual_worker 05
-FO1- forklift_operator 01
-FO2- forklift_operator 02
-FO3- forklift_operator 03
-IM1- inventory_manager 01
-IM2- inventory_manager 02
-MT1- maintenance_technician 01
-MT2- maintenance_technician 02
+## Table of Contents
 
-Actual CosmosDB content:
+- [Akkodis StressLess IoT](#akkodis-stressless-iot)
+  - [Table of Contents](#table-of-contents)
+  - [Database Structure](#database-structure)
+  - [System Overview](#system-overview)
+  - [Initial Setup](#initial-setup)
+    - [Execution Order](#execution-order)
+  - [Model Training and Predictions](#model-training-and-predictions)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Contributing](#contributing)
+  - [License](#license)
 
-{
-        "worker_id": "MW1",
-        "heart_rate": 91,
-        "skin_temperature": 90,
-        "steps": 58,
-        "motion": "stretching",
-        "posture": "bad",
-        "motion_encoding": [
-            0,
-            0,
-            1
-        ],
-        "posture_encoding": [
-            0,
-            1
-        ],
-        "stress_level": 3,
-        "id": "7c9a5888-007b-4130-a51f-c50ca1ea5076",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YZ2CwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YZ2CwAAAAAAAA==/",
-        "_etag": "\"3900512a-0000-0700-0000-6440a28c0000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957516
-    },
-    {
-        "worker_id": "MW2",
-        "heart_rate": 85,
-        "skin_temperature": 91.4,
-        "steps": 19,
-        "motion": "stretching",
-        "posture": "bad",
-        "motion_encoding": [
-            0,
-            0,
-            1
-        ],
-        "posture_encoding": [
-            0,
-            1
-        ],
-        "stress_level": 2,
-        "id": "7b7b2100-f7be-43fc-836e-3a41e2ffb901",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YZ3CwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YZ3CwAAAAAAAA==/",
-        "_etag": "\"3900522a-0000-0700-0000-6440a28d0000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957517
-    },
-    {
-        "worker_id": "MW3",
-        "heart_rate": 68,
-        "skin_temperature": 94.1,
-        "steps": 52,
-        "motion": "lifting",
-        "posture": "bad",
-        "motion_encoding": [
-            0,
-            1,
-            0
-        ],
-        "posture_encoding": [
-            0,
-            1
-        ],
-        "stress_level": 3,
-        "id": "0a324db4-93f6-4897-90e1-763c80f8c261",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YZ4CwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YZ4CwAAAAAAAA==/",
-        "_etag": "\"39006f2a-0000-0700-0000-6440a28e0000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957518
-    },
-    {
-        "worker_id": "MW4",
-        "heart_rate": 98,
-        "skin_temperature": 90.3,
-        "steps": 43,
-        "motion": "walking",
-        "posture": "bad",
-        "motion_encoding": [
-            1,
-            0,
-            0
-        ],
-        "posture_encoding": [
-            0,
-            1
-        ],
-        "stress_level": 0,
-        "id": "33fcf4d6-bf86-4e03-ae97-befa3c3501a6",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YZ5CwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YZ5CwAAAAAAAA==/",
-        "_etag": "\"3900ad2a-0000-0700-0000-6440a2900000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957520
-    },
-    {
-        "worker_id": "MW5",
-        "heart_rate": 69,
-        "skin_temperature": 90.8,
-        "steps": 25,
-        "motion": "walking",
-        "posture": "good",
-        "motion_encoding": [
-            1,
-            0,
-            0
-        ],
-        "posture_encoding": [
-            1,
-            0
-        ],
-        "stress_level": 0,
-        "id": "3636e9d3-0a0c-4c81-a3ce-af04c7cffa3d",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YZ6CwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YZ6CwAAAAAAAA==/",
-        "_etag": "\"3900f62a-0000-0700-0000-6440a2900000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957520
-    },
-    {
-        "worker_id": "FO1",
-        "forklift_status": "loading",
-        "forklift_load": 50,
-        "weight_distribution": "even",
-        "forklift_status_encoding": [
-            0,
-            0,
-            1,
-            0
-        ],
-        "stress_level": 0,
-        "id": "70717fe8-aad2-4e4d-8f8d-bae83c942bec",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YZ7CwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YZ7CwAAAAAAAA==/",
-        "_etag": "\"3900102b-0000-0700-0000-6440a2910000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957521
-    },
-    {
-        "worker_id": "FO2",
-        "forklift_status": "idle",
-        "forklift_load": 77,
-        "weight_distribution": "even",
-        "forklift_status_encoding": [
-            1,
-            0,
-            0,
-            0
-        ],
-        "stress_level": 2,
-        "id": "8a324f4d-2b45-499e-b62a-cc1fd5a669c2",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YZ8CwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YZ8CwAAAAAAAA==/",
-        "_etag": "\"3900112b-0000-0700-0000-6440a2910000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957521
-    },
-    {
-        "worker_id": "FO3",
-        "forklift_status": "loading",
-        "forklift_load": 78,
-        "weight_distribution": "uneven",
-        "forklift_status_encoding": [
-            0,
-            0,
-            1,
-            0
-        ],
-        "stress_level": 3,
-        "id": "40bb106f-771c-4b41-b284-cf1bcd2bd81b",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YZ9CwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YZ9CwAAAAAAAA==/",
-        "_etag": "\"39003a2b-0000-0700-0000-6440a2920000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957522
-    },
-    {
-        "worker_id": "IM1",
-        "inventory_level": 96,
-        "temperature": 78.5,
-        "humidity": 62,
-        "stress_level": 3,
-        "id": "65eed4d2-d71c-49c5-9311-5d492bda8dfa",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YZ+CwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YZ+CwAAAAAAAA==/",
-        "_etag": "\"3900772b-0000-0700-0000-6440a2940000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957524
-    },
-    {
-        "worker_id": "IM2",
-        "inventory_level": 58,
-        "temperature": 70.6,
-        "humidity": 45,
-        "stress_level": 0,
-        "id": "ba9e1ad8-c3ad-4e2d-8383-2d2a88ab6679",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YZ-CwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YZ-CwAAAAAAAA==/",
-        "_etag": "\"3900a72b-0000-0700-0000-6440a2950000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957525
-    },
-    {
-        "worker_id": "MT1",
-        "machine_status": "running",
-        "machine_performance": "good",
-        "maintenance_task": "cleaning",
-        "maintenance_task_encoding": [
-            1,
-            0,
-            0
-        ],
-        "stress_level": 0,
-        "id": "83baea6a-53ae-4cc0-9abc-43b700744116",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YaACwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YaACwAAAAAAAA==/",
-        "_etag": "\"3900ba2b-0000-0700-0000-6440a2960000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957526
-    },
-    {
-        "worker_id": "MT2",
-        "machine_status": "idle",
-        "machine_performance": "bad",
-        "maintenance_task": "cleaning",
-        "maintenance_task_encoding": [
-            1,
-            0,
-            0
-        ],
-        "stress_level": 1,
-        "id": "b6fcbff9-5c15-4ac4-ae35-2c264865fbfc",
-        "Processed": false,
-        "_rid": "-UdLAPY-4YaBCwAAAAAAAA==",
-        "_self": "dbs/-UdLAA==/colls/-UdLAPY-4YY=/docs/-UdLAPY-4YaBCwAAAAAAAA==/",
-        "_etag": "\"3900cf2b-0000-0700-0000-6440a2970000\"",
-        "_attachments": "attachments/",
-        "_ts": 1681957527
-    }
+## Database Structure
+
+The database contains records for the following worker types:
+
+- Manual Workers (MW)
+- Forklift Operators (FO)
+- Inventory Managers (IM)
+- Maintenance Technicians (MT)
+
+Worker IDs are represented as follows:
+
+- MW1 - Manual Worker 01
+- MW2 - Manual Worker 02
+- MW3 - Manual Worker 03
+- MW4 - Manual Worker 04
+- MW5 - Manual Worker 05
+- ...
+- FO1 - Forklift Operator 01
+- FO2 - Forklift Operator 02
+- FO3 - Forklift Operator 03
+- ...
+- IM1 - Inventory Manager 01
+- IM2 - Inventory Manager 02
+- ...
+- MT1 - Maintenance Technician 01
+- MT2 - Maintenance Technician 02
+
+## System Overview
+
+The system consists of the following main components:
+
+1. IoT devices to collect biometric data from workers
+2. Azure IoT Hub to securely manage and transfer the data
+3. Azure Cosmos DB to store the collected data
+4. A machine learning model to analyze the data and predict stress levels
+5. A user-friendly interface to display the training recommendations
+
+## Initial Setup
+
+Before running the main scripts, ensure that all the documents in the Cosmos DB have their "Processed" flag set to `False`. This allows the RandomForest algorithm to start with a clean state and set the flag to `True` when the model has been trained.
+
+### Execution Order
+
+To achieve optimal results, execute the scripts in the following order:
+
+1. `01.AddProcessedField.py` - Set the "Processed" flag to `False` for all documents in Cosmos DB.
+2. `02.DBsetup.py` - Sends biometric/telemetry data to Cosmos DB.
+3. `03.Test.py` - Contains the RandomForestClassifier model to detect stress levels and the recommendation algorithm to send responses to the IoT Hub for workers to access.
+
+By following this order, you ensure that the system is properly set up and the RandomForest model can accurately detect stress levels and provide appropriate training recommendations.
+
+## Model Training and Predictions
+
+The RandomForest model is initially trained using data with the "Processed" flag set to `False`. Once the model is trained, the system directly performs predictions on any new incoming data without updating the model. The "Processed" flag is not changed for the new data, and it is used only for making predictions.
+
+To control whether the model should be retrained with new data or not, a variable named `model_trained` is introduced in the `main.py` script. This variable tracks whether the model has already been trained or not. Once the model has been trained using the initial data with the "Processed" flag set to `False`, the variable will be updated, and the model will not be retrained with the new incoming data.
+
+## Installation
+
+1. Clone the repository:
+```
+git clone https://github.com/VSM97/Akkodis-IOT-StressLess.git
+```
+
+2. Install the required Python packages:
+```
+pip install -r requirements.txt
+```
+
+3. Set up the environment variables for the Azure IoT Hub and Azure Cosmos DB:
+```
+export DEVICE_CONNECTION_STRING=<your_device_connection_string>
+export COSMOS_ENDPOINT=<your_cosmos_db_endpoint>
+export COSMOS_KEY=<your_cosmos_db_key>
+export COSMOS_DATABASE_NAME=<your_cosmos_db_database_name>
+export COSMOS_CONTAINER_NAME=<your_cosmos_db_container_name>
+```
+
+## Usage
+
+1. Run the IoT device simulator script:
+```
+python iot_device_simulator.py
+```
+
+2. Run the main analysis and recommendation script:
+```
+python main.py
+```
+
+The system will start collecting data from the simulated IoT devices, analyze the data, and provide training recommendations based on the workers' physiological stress levels.
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+This project is a property of Akkodis and its usage is prohibited without explicit permission. For inquiries and usage permissions, please contact Akkodis. Unauthorized use or distribution of this project may result in legal consequences.
