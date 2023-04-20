@@ -7,6 +7,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer, KNNImputer
 from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
 import numpy as np
 
 # Set up Cosmos DB connection
@@ -28,8 +29,6 @@ while True:
         query=query,
         enable_cross_partition_query=True
     ))
-
-    print("Fetched items from Cosmos DB:", items)
 
     # Check if there are unprocessed items and process those
     if items:

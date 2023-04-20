@@ -101,7 +101,7 @@ async def main():
             payload["id"] = payload_id
 
             # Add the Processed field to the payload
-            payload["Processed"] = False
+            payload["Processed"] = 'false'
 
             print(f"Sending payload for {worker_type} {worker_id}: {payload}")
 

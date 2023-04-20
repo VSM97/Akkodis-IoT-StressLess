@@ -1,10 +1,3 @@
-#To update the existing database with key and value of "Processed":"False".
-#Good idea to run this before any other script to set the Processed flag to False in all the documents/ JSON files in the CosmosDB. Then the RandomForest will
-#Start first then it will set the flag to True when model has been trained.
-
-#Steps to execute scripts are 01.AddProcessedField.py 02.DBsetup.py 03.Test.py 
-#DBsetup.py sends biometrics/ telemetry to the cosmosdb.
-#Test.py has the RandomForestClassifier model to detect stress and the recommendation algorithm to send responses to IOT hub to be referred by the workers.
 from azure.cosmos import CosmosClient
 from tqdm import tqdm
 import os
@@ -27,7 +20,7 @@ documents = list(cosmos_container.query_items(
 # Update the documents with a progress bar
 for item in tqdm(documents):
     # Add the new field to the document
-    item["Processed"] = "False"
+    item["Processed"] = "false"
     
     # Update the document in the container
     cosmos_container.upsert_item(item)
