@@ -1,10 +1,10 @@
-# Akkodis StressLess IoT
+# StressLess IoT
 
-Akkodis StressLess is an IoT product aimed at monitoring workers' physiological stress levels in real-time to improve their performance and reduce the risk of injury. The system collects biometric data from workers, analyzes the data to determine stress levels, and provides customized training recommendations based on the workers' physiological stress levels.
+StressLess is an IoT product aimed at monitoring workers' physiological stress levels in real-time to improve their performance and reduce the risk of injury. The system collects biometric data from workers, analyzes the data to determine stress levels, and provides customized training recommendations based on the workers' physiological stress levels.
 
 ## Table of Contents
 
-- [Akkodis StressLess IoT](#akkodis-stressless-iot)
+- [StressLess IoT](#stressless-iot)
   - [Table of Contents](#table-of-contents)
   - [Database Structure](#database-structure)
   - [System Overview](#system-overview)
