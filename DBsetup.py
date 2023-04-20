@@ -100,6 +100,9 @@ async def main():
             # Add the id property to the payload
             payload["id"] = payload_id
 
+            # Add the Processed field to the payload
+            payload["Processed"] = False
+
             print(f"Sending payload for {worker_type} {worker_id}: {payload}")
 
             # Serialize payload as a JSON document
