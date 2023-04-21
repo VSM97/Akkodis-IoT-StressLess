@@ -24,7 +24,7 @@ time_delay = 60
 
 while True:
     # Query data from Cosmos DB with Processed False
-    query = "SELECT * FROM c WHERE c.Processed = 'False'"
+    query = "SELECT * FROM c WHERE c.Processed = 'false'"
     items = list(cosmos_container.query_items(
         query=query,
         enable_cross_partition_query=True
